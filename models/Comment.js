@@ -6,49 +6,54 @@ const ReplySchema = new Schema(
     // set custom id to avoid confusion with parent comment _id
     replyId: {
       type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId()
+      default: () => new Types.ObjectId(),
     },
     replyBody: {
-      type: String
+      type: String,
+      required: true,
+      trim: true,
     },
     writtenBy: {
-      type: String
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Date,
       default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
-    }
+      get: (createdAtVal) => dateFormat(createdAtVal),
+    },
   },
   {
     toJSON: {
-      getters: true
-    }
+      getters: true,
+    },
   }
 );
 
 const CommentSchema = new Schema(
   {
     writtenBy: {
-      type: String
+      type: String,
+      required: true,
     },
     commentBody: {
-      type: String
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Date,
       default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
+      get: (createdAtVal) => dateFormat(createdAtVal),
     },
     // use ReplySchema to validate data for a reply
-    replies: [ReplySchema]
+    replies: [ReplySchema],
   },
   {
     toJSON: {
       virtuals: true,
-      getters: true
+      getters: true,
     },
-    id: false
+    id: false,
   }
 );
 
